@@ -1,0 +1,33 @@
+{
+  "name": "deckgl",
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [],
+  "main": "src/index.js",
+  "dependencies": {
+    "@deck.gl/aggregation-layers": "8.2.1",
+    "@deck.gl/core": "8.2.1",
+    "@deck.gl/google-maps": "8.2.1",
+    "@deck.gl/layers": "8.2.1",
+    "google-map-react": "1.1.7",
+    "react": "16.8.5",
+    "react-dom": "16.8.5",
+    "react-scripts": "^2.1.8",
+    "reactjs-popup": "^2.0.5"
+  },
+  "devDependencies": {
+    "typescript": "3.3.3"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
+}
