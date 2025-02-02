@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Live Location</title>
+</head>
+<body>
+    <h1>Live Location Tracker</h1>
+    <button onclick="trackLocation()">Start Tracking</button>
+    <div id="location"></div>
+
+    <script>
+        function trackLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.watchPosition(function(position) {
+                    const latitude = position.coords.latitude;
+                    const longitude = position.coords.longitude;
+                    const accuracy = position.coords.accuracy;
+
+                    // Display the location
+                    document.getElementById('location').innerHTML = `
+                        Latitude: ${latitude}<br>
+                        Longitude: ${longitude}<br>
+                        Accuracy: ${accuracy} meters
+                    `;
+
+                    // Optionally, you can send this data to your backend or a map API
+                    // Example: Sending location data to the server
+                    fetch('http://localhost:3000/location', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ latitude, longitude })
+                    })
+                    .then(response => response.json())
+                    .then(data => console.log(data))
+                    .catch(error => console.log('Error:', error));
+                }, function(error) {
+                    console.error("Error fetching location: ", error);
+                    document.getElementById('location').innerHTML = "Location tracking failed!";
+                });
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        }
+    </script>
+</body>
+</html>
