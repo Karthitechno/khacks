@@ -1,0 +1,15 @@
+[{"latitude":12.93,"longitude":80.83,"tau":1.043166976,"ws":12.205685,"wave_height":3.6761372328,"capsize":0, "cap" : "68%", "boat": "9m"},
+{"latitude":10.61,"longitude":80.40,"tau":1.20,"ws":14.56,"wave_height":3.90,"capsize":0, "cap" : "81%","boat":"9m"},
+{"latitude":10.62,"longitude":80.41,"tau":1.20,"ws":14.56,"wave_height":3.90,"capsize":0, "cap" : "81%","boat": "9m"},
+{"latitude":10.63,"longitude":80.42,"tau":1.20,"ws":14.567845,"wave_height":3.9023458534,"capsize":0, "cap" : "81%","boat": "9m"},
+{"latitude":10.64,"longitude":80.43,"tau":1.20123666,"ws":14.567845,"wave_height":3.9023458534,"capsize":0, "cap" : "81%","boat":"9m"},
+{"latitude":15.79,"longitude":82.89,"tau":1.22134567,"ws":14.789567,"wave_height":3.0287976542,"capsize":0, "cap" : "84%","boat": "9m"},
+{"latitude":15.80,"longitude":82.90,"tau":1.22134567,"ws":14.789567,"wave_height":4.0287976542,"capsize":0, "cap" : "84%","boat":"9m"},
+{"latitude":15.80,"longitude":82.91,"tau":1.22134567,"ws":14.789567,"wave_height":4.0287976542,"capsize":0, "cap" : "84%","boat": "11m"},
+{"latitude":15.37,"longitude":80.76,"tau":1.32678954,"ws":15.878542,"wave_height":4.0287976542,"capsize":0, "cap" : "70%","boat": "11m"},
+{"latitude":15.37,"longitude":80.76,"tau":1.32678954,"ws":15.878542,"wave_height":4.0287976542,"capsize":0, "cap" : "70%","boat": "11m"}
+
+
+
+
+]
