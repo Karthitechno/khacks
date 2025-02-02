@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ship Route with Weather & Live Location</title>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        #map { height: 500px; width: 100%; margin-top: 10px; }
+        input, button { padding: 10px; margin: 5px; }
+        #weather { margin-top: 10px; font-size: 16px; }
+    </style>
+    <script>
+        let map, routeLayer, shipMarker;
+
+        function initMap() {
+            map = L.map('map').setView([10.0, 80.0], 5);  // Default map view
+
+            // OpenSeaMap Layer
+            L.tileLayer('https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png', {
+                attribution: '© OpenSeaMap'
+            }).addTo(map);
+
+            // OpenStreetMap Layer for land reference
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+
+            // Track Ship Location
+            trackShipLocation();
+        }
+
+        function trackShipLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.watchPosition(position => {
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
+
+                    if (shipMarker) map.removeLayer(shipMarker);
+
+                    // Add ship marker
+                    shipMarker = L.marker([lat, lon], {
+                        icon: L.icon({
+                            iconUrl: 'https://cdn-icons-png.flaticon.com/512/2096/2096817.png', // Ship icon
+                            iconSize: [40, 40],
+                        })
+                    }).addTo(map).bindPopup("Your Ship's Current Location").openPopup();
+
+                    map.setView([lat, lon], 6); // Adjust map to focus on ship
+                }, error => {
+                    alert("Error getting ship location: " + error.message);
+                }, { enableHighAccuracy: true });
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        }
+
+        async function getCoordinates(portName) {
+            const url = https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(portName)};
+            const response = await fetch(url);
+            const data = await response.json();
+            if (data.length > 0) {
+                return [parseFloat(data[0].lat), parseFloat(data[0].lon)];
+            } else {
+                alert(Port not found: ${portName});
+                return null;
+            }
+        }
+
+        async function getWeather(lat, lon, portName) {
+            const weatherApiKey = "// Replace with your OpenWeatherMap API key"
+            const weatherUrl = https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${weatherApiKey}&units=metric;
+
+            const response = await fetch(weatherUrl);
+            const data = await response.json();
+            if (data.main) {
+                return ${portName}: ${data.weather[0].description}, Temp: ${data.main.temp}°C, Wind: ${data.wind.speed} m/s;
+            } else {
+                return ${portName}: Weather data not available;
+            }
+        }
+
+        async function plotRoute() {
+            const startPort = document.getElementById("startPort").value;
+            const endPort = document.getElementById("endPort").value;
+            const apiKey = " // Replace with your OpenRouteService API key"
+
+            if (!startPort || !endPort) {
+                alert("Please enter both ports!");
+                return;
+            }
+
+            const startCoords = await getCoordinates(startPort);
+            const endCoords = await getCoordinates(endPort);
+            if (!startCoords || !endCoords) return;
+
+            // Remove existing route if any
+            if (routeLayer) map.removeLayer(routeLayer);
+
+            // Add port markers
+            L.marker(startCoords).addTo(map).bindPopup(Start: ${startPort}).openPopup();
+            L.marker(endCoords).addTo(map).bindPopup(End: ${endPort}).openPopup();
+
+            // Fetch weather data for both ports
+            const startWeather = await getWeather(startCoords[0], startCoords[1], startPort);
+            const endWeather = await getWeather(endCoords[0], endCoords[1], endPort);
+
+            document.getElementById("weather").innerHTML = <b>Weather Conditions:</b><br>${startWeather}<br>${endWeather};
+
+            // Fetch route from OpenRouteService
+            const routeUrl = https://api.openrouteservice.org/v2/directions/driving-car?api_key=${apiKey}&start=${startCoords[1]},${startCoords[0]}&end=${endCoords[1]},${endCoords[0]};
+
+            fetch(routeUrl)
+                .then(response => response.json())
+                .then(data => {
+                    const coordinates = data.routes[0].geometry.coordinates;
+                    const routePoints = coordinates.map(coord => [coord[1], coord[0]]);
+
+                    // Draw route
+                    routeLayer = L.polyline(routePoints, {color: 'blue', weight: 3}).addTo(map);
+                    map.fitBounds(routeLayer.getBounds());
+                })
+                .catch(error => console.error("Error fetching route:", error));
+        }
+    </script>
+</head>
+<body onload="initMap()">
+    <h2>Ship Route with Weather & Live Location</h2>
+    <input type="text" id="startPort" placeholder="Enter start port (e.g., Singapore)">
+    <input type="text" id="endPort" placeholder="Enter destination port (e.g., Colombo)">
+    <button onclick="plotRoute()">Find Route</button>
+    <div id="weather"></div>
+    <div id="map"></div>
+</body>
+</html>
