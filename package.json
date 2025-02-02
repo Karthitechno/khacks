@@ -5,11 +5,13 @@
   "keywords": [],
   "main": "src/index.js",
   "dependencies": {
+    "18": "^0.0.0",
     "@deck.gl/aggregation-layers": "8.2.1",
     "@deck.gl/core": "8.2.1",
     "@deck.gl/google-maps": "8.2.1",
     "@deck.gl/layers": "8.2.1",
     "google-map-react": "1.1.7",
+    "install": "^0.13.0",
     "react": "16.8.5",
     "react-dom": "16.8.5",
     "react-scripts": "^2.1.8",

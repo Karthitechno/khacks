@@ -50,8 +50,8 @@ const DeckGLOverlay = () => {
     data: sourceData,
     opacity: 0.8,
     filled: true,
-    radiusMinPixels: 2,
-    radiusMaxPixels: 5,
+    radiusMinPixels: 20,
+    radiusMaxPixels: 50,
     getPosition: d => [Number(d.longitude), Number(d.latitude)],
     getFillColor: d => d.level > 2 ? [200, 0, 40, 150] : [255, 140, 0, 100],
   
@@ -77,7 +77,7 @@ const DeckGLOverlay = () => {
     
     <>
       <GoogleMapReact
-        bootstrapURLKeys={{ key: "AIzaSyB_osK5Rg2Jpir8rp0h6GlHYR7pvLiCYTw" }}
+        bootstrapURLKeys={{ key: "AIzaSyAQmWuNTAvV45gVfbpMkv2RMdB6NxtZWpo" }}
         center={{ lat: 20.5937, lng: 78.9629 }}
         zoom={4.8}
         options={{ disableDoubleClickZoom: true, styles: mapStyles}}
@@ -85,9 +85,20 @@ const DeckGLOverlay = () => {
         yesIWantToUseGoogleMapApiInternals
       />
       <div id="tooltip" ref={tooltip}>
-        <p>Disaster : {details.disastertype}</p>  
-        <p>Level : {details.level}</p>  
-        <p>Location : {details.geolocation}</p>  
+        
+      <p>Capsize Probability:{details.p}</p>
+        <p>Risk Level:{details.level}</p>
+        <p>Wind Speed : {details.ws}</p>  
+        <p>Wind Stress : {details.tau}</p>
+        <p>Wave Height : {details.wave_height}</p>
+        <p>Boat Length : {details.bt_ln}</p>
+        <p>Boat Height : {details.bt_ht}</p>
+        <p>Boat Breadth : {details.bt_br}</p>
+        <p> latitude : {details.latitude}</p>
+        <p>longitude:{details.longitude}</p>
+        <p>Nearby Port:{details.Nearby_Port}</p>
+        <p>Distance To Nearset Port : {details.distance}</p>
+        <p></p>
       </div>
     </>
   );
